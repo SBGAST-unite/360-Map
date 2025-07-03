@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SBGAST 360 Map</title>
+  <style>
+    #map {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+    }
+    #map img {
+      width: 100%;
+    }
+    .dot {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: red;
+      border-radius: 50%;
+      cursor: pointer;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icon.png">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js');
+      });
+    }
+  </script>
+
+</head>
+<body>
+
+<h2><font color="red" size="88">SBGAST 360 Map</font></h2>
+<div id="map">
+  <img src="map.jpg" alt="Map">
+</div>
+
+<div id="viewer" style="width:100%; height:500px; display:none;"></div>
+
+<script src="pannellum.js"></script>
+<link rel="stylesheet" href="pannellum.css">
+
+<script>
+  const map = document.getElementById('map');
+  const viewerDiv = document.getElementById('viewer');
+
+  const hotspots = [
+    { x: 754, y: 140.97, photo: "RP1.JPG" },
+    { x: 753, y: 198.97, photo: "RP2.JPG" },
+    { x: 752, y: 262.97, photo: "SEC.JPG" },
+    { x: 753, y: 322.97, photo: "SBPC.JPG" },
+    { x: 385, y: 44.97, photo: "14.JPG" },
+    { x: 333, y: 66.43, photo: "15.JPG" },
+    { x: 218, y: 69.43, photo: "16.JPG" },
+    { x: 513, y: 74.43, photo: "13.JPG" },
+    { x: 506, y: 208.43, photo: "11.JPG" },
+    { x: 475, y: 251.43, photo: "12.JPG" },
+    { x: 389, y: 240.43, photo: "07.JPG" },
+    { x: 388, y: 153.43, photo: "24.JPG" },
+    { x: 332, y: 131.43, photo: "25.JPG" },
+    { x: 312, y: 148.43, photo: "23.JPG" },
+    { x: 312, y: 176.43, photo: "26.JPG" },
+    { x: 312, y: 206.43, photo: "27.JPG" },
+    { x: 353, y: 209.43, photo: "10.JPG" },
+    { x: 350, y: 238.43, photo: "09.JPG" },
+    { x: 331, y: 237.43, photo: "08.JPG" },
+    { x: 219, y: 132.43, photo: "19.JPG" },
+    { x: 181, y: 131.43, photo: "18.JPG" },
+    { x: 150, y: 132.43, photo: "17.JPG" },
+    { x: 160, y: 151.43, photo: "32.JPG" },
+    { x: 214, y: 162.43, photo: "21.JPG" },
+    { x: 257, y: 153.43, photo: "20.JPG" },
+    { x: 213, y: 182.43, photo: "22.JPG" },
+    { x: 145, y: 185.43, photo: "31.JPG" },
+    { x: 150, y: 201.43, photo: "33.JPG" },
+    { x: 141, y: 214.43, photo: "30.JPG" },
+    { x: 216, y: 209.43, photo: "29.JPG" },
+    { x: 247, y: 209.43, photo: "28.JPG" },
+    { x: 205, y: 268.43, photo: "04.JPG" },
+    { x: 200, y: 290.43, photo: "03.JPG" },
+    { x: 236, y: 286.43, photo: "06.JPG" },
+    { x: 159, y: 278.43, photo: "05.JPG" },
+    { x: 205, y: 369.43, photo: "01.JPG" },
+    { x: 225, y: 350.43, photo: "02.JPG" }
+  ];
+
+  hotspots.forEach(h => createDot(h.x, h.y, h.photo));
+
+  function createDot(x, y, photo) {
+    const dot = document.createElement('div');
+    dot.className = 'dot';
+    dot.style.left = x + 'px';
+    dot.style.top = y + 'px';
+
+    dot.addEventListener('click', function (e) {
+      e.stopPropagation();
+      openPano(photo);
+    });
+
+    map.appendChild(dot);
+  }
+
+  function openPano(photo) {
+    viewerDiv.style.display = 'block';
+    pannellum.viewer('viewer', {
+      type: 'equirectangular',
+      panorama: photo,
+      autoLoad: true
+    });
+  }
+</script>
+<font color="navy">
+<p align="right">Created by Kenneth Lester</p>
+<p align="right">Idea by Freddy Damu</p>
+<p align="right">Copyright Reserved 2018 </p></font>
+</body>
+</html>
